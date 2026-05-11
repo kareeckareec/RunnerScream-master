@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a23e4b473cdcb6e25822ccfa12bc0cfe, type: 3}
+  m_Name: CarData_0
+  m_EditorClassIdentifier: 
+  carId: 0
+  carName: First car
+  description: First car
+  priceSoft: 50
+  priceHard: 4
+  carPrefab: {fileID: 1429580138241874, guid: 7a3ef98fe4aee4047a8c214d0c33f19b, type: 3}
+  carIcon: {fileID: 0}
+  availableColors: []
+  previewColor: {r: 0.22560722, g: 0.22560722, b: 0.22560722, a: 1}
+  baseStartSpeed: 15
+  baseMaxSpeed: 40
+  baseAcceleration: 0.5
+  baseHealth: 3
+  isStarter: 0
+  isUnlockedByDefault: 0

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1111f4d2-444f-49ad-9d9c-76c425f5b81f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Content/New Material 1.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/New Material 1.mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle1.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle1.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle2.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle2.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle3.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle3.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle4.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle4.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle5.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Content/Obstacle5.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ObstacleData.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ObstacleData.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ObstacleSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ObstacleSpawner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../ProjectSettings/ProjectVersion.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Controls.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="341gfX4IXaTrQ1xCvc0YhJGTJnN" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1111f4d2-444f-49ad-9d9c-76c425f5b81f" name="Changes" comment="" />
+      <created>1760386599272</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760386599272</updated>
+      <workItem from="1760386599273" duration="43000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.OperationCanceledException" breakIfHandledByOtherCode="false" displayValue="System.OperationCanceledException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.Tasks.TaskCanceledException" breakIfHandledByOtherCode="false" displayValue="System.Threading.Tasks.TaskCanceledException" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
