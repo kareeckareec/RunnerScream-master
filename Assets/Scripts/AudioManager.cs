@@ -12,7 +12,8 @@ namespace CoreGameplay.Audio
 
         [Header("Music")]
         [SerializeField] private AudioSource musicSource;
-        [SerializeField] private AudioClip backgroundMusic;
+        [SerializeField] private AudioClip menuMusicClip;
+        [SerializeField] private AudioClip gameMusicClip;
 
         [Header("SFX Clips")]
         [SerializeField] private AudioClip laneChangeClip;
@@ -49,9 +50,6 @@ namespace CoreGameplay.Audio
             ApplyMusicVolume();
             ApplySFXVolume();
 
-            if (backgroundMusic != null)
-                PlayMusic(backgroundMusic);
-
             // Проверка параметров AudioMixer при старте
             ValidateMixerParameters();
         }
@@ -63,6 +61,15 @@ namespace CoreGameplay.Audio
             if (clip == null) return;
             musicSource.clip = clip;
             musicSource.Play();
+        }
+        public void PlayMenuMusic()
+        {
+            Debug.Log("Playing menu music...");
+            PlayMusic(menuMusicClip);
+        }
+        public void PlayGameMusic()
+        {
+            PlayMusic(gameMusicClip);
         }
 
         public void StopMusic() => musicSource.Stop();

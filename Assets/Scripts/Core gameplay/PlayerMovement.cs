@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using CoreGameplay.Audio;
 
 namespace CoreGameplay
 {
@@ -10,9 +11,6 @@ namespace CoreGameplay
         [SerializeField] private float startSpeed = 5f;
         [SerializeField] private float accelerationPerSecond = 0.5f;
         [SerializeField] private float maxSpeed = 15f;
-
-        [Header("UI Settings")]
-        [SerializeField] private TMP_Text speedText;
 
         [Header("Lane Settings")]
         [SerializeField] private Transform laneTransform;
@@ -25,6 +23,7 @@ namespace CoreGameplay
 
         void Start()
         {
+            AudioManager.Instance.PlayGameMusic();
             currentSpeed = startSpeed;
         }
 
@@ -33,7 +32,6 @@ namespace CoreGameplay
             Vector3 direction = new Vector3(1,0,0);
             currentSpeed = Mathf.Min(currentSpeed + accelerationPerSecond * Time.deltaTime, maxSpeed);
             transform.Translate(direction * CurrentSpeed * Time.deltaTime);
-            speedText.text = $"Speed: {CurrentSpeed}";
 
             laneTransform.position = new Vector3(transform.position.x+50,0,0);
         }

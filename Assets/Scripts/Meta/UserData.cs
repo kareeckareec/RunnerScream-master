@@ -11,10 +11,12 @@ namespace DataBase
     /// </summary>
     public class UserData : MonoBehaviour
     {
+        public static event System.Action OnDataLoaded;
+
+        public static bool IsDataLoaded { get; private set; } = false;
         [SerializeField] private bool clearDataOnNextGet = false;
         [SerializeField] private int[] expToReachNextLevel;
         [SerializeField] private int[] rewards;
-
 
         /// <summary>
         /// Ник игрока.
@@ -259,9 +261,16 @@ namespace DataBase
 
             public void Init()
             {
+                if (passiveAbilitiesLevels == null) passiveAbilitiesLevels = new List<int>();
                 while (passiveAbilitiesLevels.Count < 5) passiveAbilitiesLevels.Add(0);
+                
+                if (passiveAbilitiesProgress == null) passiveAbilitiesProgress = new List<float>();
                 while (passiveAbilitiesProgress.Count < 5) passiveAbilitiesProgress.Add(0);
+                
+                if (passiveAbilitiesSteps == null) passiveAbilitiesSteps = new List<int>();
                 while (passiveAbilitiesSteps.Count < 5) passiveAbilitiesSteps.Add(0);
+                
+                if (passiveAbilitiesCosts == null) passiveAbilitiesCosts = new List<int>();
                 while (passiveAbilitiesCosts.Count < 5) passiveAbilitiesCosts.Add(0);
             }
         }
@@ -306,6 +315,9 @@ namespace DataBase
             if (result.Data.ContainsKey("Data")) JsonUtility.FromJsonOverwrite(result.Data["Data"].Value, data);
             else UpdateData();
             foreach (var car in data.cars) car.Init();
+            
+            IsDataLoaded = true;
+            OnDataLoaded?.Invoke(); 
             onGetDataResult?.Invoke();
         }
 

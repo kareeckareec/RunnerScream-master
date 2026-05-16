@@ -31,7 +31,6 @@ namespace Garage
             if (Instance == null)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -136,7 +135,6 @@ namespace Garage
         
         public void SelectCurrentCar()
         {
-            // Нельзя выбрать заблокированную машину
             if (!IsCurrentCarUnlocked())
             {
                 Debug.Log("Машина ещё не куплена!");
@@ -147,37 +145,43 @@ namespace Garage
             DataBase.UserData.UpdateData();
             Debug.Log($"Выбрана машина: {currentCarData.carName}");
             UpdateUI();
+            
+            OnCarChanged?.Invoke(currentCarData);
         }
         
         public void PurchaseCurrentCar()
         {
             var carData = DataBase.UserData.GetCarData(currentCarData.carId);
             if (carData.isUnlocked) return;
-            
+
             if (currentCarData.priceSoft <= 0 && currentCarData.priceHard <= 0)
             {
                 UnlockCurrentCar();
                 return;
             }
-            
-            bool canBuySoft = MenuCurrencyUtils.Instance != null && 
-                              MenuCurrencyUtils.Instance.HasEnoughSoftCurrency(currentCarData.priceSoft);
-            bool canBuyHard = MenuCurrencyUtils.Instance != null && 
-                              MenuCurrencyUtils.Instance.HasEnoughHardCurrency(currentCarData.priceHard);
-            
-            if (currentCarData.priceSoft > 0 && canBuySoft)
+
+            bool useSoft = currentCarData.priceSoft > 0 && 
+                           MenuCurrencyUtils.Instance != null && 
+                           MenuCurrencyUtils.Instance.HasEnoughSoftCurrency(currentCarData.priceSoft);
+            bool useHard = !useSoft && currentCarData.priceHard > 0 && 
+                           MenuCurrencyUtils.Instance != null && 
+                           MenuCurrencyUtils.Instance.HasEnoughHardCurrency(currentCarData.priceHard);
+
+            if (useSoft)
             {
-                if (MenuCurrencyUtils.Instance.SubtractSoftCurrency(currentCarData.priceSoft))
-                    UnlockCurrentCar();
-                else
-                    UpdateUI();
+                MenuCurrencyUtils.Instance.SubtractSoftCurrency(currentCarData.priceSoft, success =>
+                {
+                    if (success) UnlockCurrentCar();
+                    else UpdateUI();
+                });
             }
-            else if (currentCarData.priceHard > 0 && canBuyHard)
+            else if (useHard)
             {
-                if (MenuCurrencyUtils.Instance.SubtractHardCurrency(currentCarData.priceHard))
-                    UnlockCurrentCar();
-                else
-                    UpdateUI();
+                MenuCurrencyUtils.Instance.SubtractHardCurrency(currentCarData.priceHard, success =>
+                {
+                    if (success) UnlockCurrentCar();
+                    else UpdateUI();
+                });
             }
             else
             {
@@ -188,10 +192,10 @@ namespace Garage
         
         private void UnlockCurrentCar()
         {
-            var carData = DataBase.UserData.GetCarData(currentCarData.carId);
+            var carData = UserData.GetCarData(currentCarData.carId);
             carData.isUnlocked = true;
-            DataBase.UserData.SetCarData(currentCarData.carId, carData);
-            DataBase.UserData.UpdateData();
+            UserData.SetCarData(currentCarData.carId, carData);
+            UserData.UpdateData();
             
             // Автовыбор купленной машины
             DataBase.UserData.SelectedCar = currentCarData.carId;

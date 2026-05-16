@@ -5,6 +5,7 @@ using CoreGameplay.UI;
 using CoreGameplay.Pickups;
 using TMPro;
 using CoreGameplay.Audio; // добавлено
+using DataBase;
 
 namespace CoreGameplay
 {
@@ -24,6 +25,18 @@ namespace CoreGameplay
         private Coroutine immunityRoutine;
         public static int DeathsCount;
         public UIController uiControllerObj;
+
+        [Header("Visual Effects")]
+        [SerializeField] private GameObject hitEffectPrefab;  // префаб частиц/вспышки
+
+        private void SpawnHitEffect()
+        {
+            if (hitEffectPrefab != null)
+            {
+                GameObject effect = Instantiate(hitEffectPrefab, transform);
+                Destroy(effect, 1f);
+            }
+        }
 
         void Start()
         {
@@ -58,6 +71,7 @@ namespace CoreGameplay
         void TakeDamage()
         {
             if (isImmune) return;
+            SpawnHitEffect(); 
 
             // Воспроизвести звук столкновения
             AudioManager.Instance?.PlayCollision(transform.position);
@@ -75,8 +89,17 @@ namespace CoreGameplay
             {
                 int coins = AwardSoftCurrencyForRun();
                 int finalScore = obstacleSpawner != null ? Mathf.FloorToInt(obstacleSpawner.Score) : 0;
-                bool isNewRecord = LeaderboardManager.Instance.TryAddScoreAndCheckRecord(finalScore);
+
+                bool isNewRecord = finalScore > UserData.Record;
+                if (isNewRecord)
+                {
+                    UserData.Record = finalScore;
+                    UserData.UpdateData();
+                }
+                LeaderboardManager.Instance.AddScore(finalScore, UserData.NickName);
+    
                 uiControllerObj.OnGameOver(finalScore, isNewRecord, coins);
+                
                 DeathsCount++;
                 return;
             }

@@ -214,35 +214,37 @@ namespace Meta
         /// Списать жёсткую валюту с проверкой достаточности
         /// </summary>
         /// <returns>Успешно ли списание</returns>
-        public bool SubtractHardCurrency(int amountToSubtract)
+        public void SubtractHardCurrency(int amount, Action<bool> onComplete = null)
         {
-            if (amountToSubtract <= 0)
+            if (amount <= 0)
             {
                 Debug.LogWarning("Нельзя списать отрицательное или нулевое количество валюты");
-                return false;
+                onComplete?.Invoke(false);
+                return;
             }
-            
-            if (currentHardCurrency < amountToSubtract)
+
+            if (currentHardCurrency < amount)
             {
-                return false;
+                Debug.Log($"Недостаточно твёрдой валюты: {currentHardCurrency} < {amount}");
+                onComplete?.Invoke(false);
+                return;
             }
-            
-            PlayFabCurrency.SafeSubtractCurrency("HC", amountToSubtract,
+
+            PlayFabCurrency.SafeSubtractCurrency("HC", amount,
                 onSuccess: (newBalance) =>
                 {
                     currentHardCurrency = newBalance;
                     UpdateUIText();
                     OnHardCurrencyChanged?.Invoke(newBalance);
-                    
-                    Debug.Log($"Списано {amountToSubtract} жёсткой валюты. Новый баланс: {newBalance}");
+                    Debug.Log($"Списано {amount} твёрдой валюты. Новый баланс: {newBalance}");
+                    onComplete?.Invoke(true);
                 },
                 onError: (error) =>
                 {
-                    Debug.LogError($"Ошибка списания жёсткой валюты: {error}");
+                    Debug.LogError($"Ошибка списания твёрдой валюты: {error}");
+                    onComplete?.Invoke(false);
                 }
             );
-            
-            return true;
         }
         
         /// <summary>

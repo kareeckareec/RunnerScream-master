@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-using CoreGameplay.Audio; // добавлено
+using CoreGameplay.Audio;
 
 namespace CoreGameplay
 {
@@ -47,22 +47,12 @@ namespace CoreGameplay
 
         void KeyboardInput()
         {
-            if (Keyboard.current.wKey.wasPressedThisFrame && Move(Vector2Int.up)) 
-            {
-                StartCoroutine(DoTilt(Vector2.up));
-                AudioManager.Instance?.PlayLaneChange(); // добавлено
-            }
-            if (Keyboard.current.aKey.wasPressedThisFrame && Move(Vector2Int.left)) 
+            if (Keyboard.current.aKey.wasPressedThisFrame && Move(Vector2Int.left))
             {
                 StartCoroutine(DoTilt(Vector2.left));
                 AudioManager.Instance?.PlayLaneChange();
             }
-            if (Keyboard.current.sKey.wasPressedThisFrame && Move(Vector2Int.down)) 
-            {
-                StartCoroutine(DoTilt(Vector2.down));
-                AudioManager.Instance?.PlayLaneChange();
-            }
-            if (Keyboard.current.dKey.wasPressedThisFrame && Move(Vector2Int.right)) 
+            if (Keyboard.current.dKey.wasPressedThisFrame && Move(Vector2Int.right))
             {
                 StartCoroutine(DoTilt(Vector2.right));
                 AudioManager.Instance?.PlayLaneChange();
@@ -88,9 +78,10 @@ namespace CoreGameplay
                     {
                         dragDo = true;
                         isTouch = false;
+                        // Обрабатываем только горизонтальные свайпы (влево/вправо)
                         if (Mathf.Abs(lp.x - fp.x) > Mathf.Abs(lp.y - fp.y))
                         {
-                            if ((lp.x > fp.x))
+                            if (lp.x > fp.x)
                             {
                                 Debug.Log("Right Swipe");
                                 if (Move(Vector2Int.right))
@@ -105,27 +96,6 @@ namespace CoreGameplay
                                 if (Move(Vector2Int.left))
                                 {
                                     StartCoroutine(DoTilt(Vector2.left));
-                                    AudioManager.Instance?.PlayLaneChange();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (lp.y > fp.y)
-                            {
-                                Debug.Log("Up Swipe");
-                                if (Move(Vector2Int.up))
-                                {
-                                    StartCoroutine(DoTilt(Vector2.up));
-                                    AudioManager.Instance?.PlayLaneChange();
-                                }
-                            }
-                            else
-                            {
-                                Debug.Log("Down Swipe");
-                                if (Move(Vector2Int.down))
-                                {
-                                    StartCoroutine(DoTilt(Vector2.down));
                                     AudioManager.Instance?.PlayLaneChange();
                                 }
                             }

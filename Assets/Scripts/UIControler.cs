@@ -25,6 +25,7 @@ namespace CoreGameplay.UI
 
         [SerializeField] private RectTransform healthBar;
         [SerializeField] private float healthBarElementSize = 20f;
+        [SerializeField] private TextMeshProUGUI healthText; 
 
         private static UIController Instance { get; set; }
 
@@ -105,9 +106,14 @@ namespace CoreGameplay.UI
 
         public static void SetHealth(int health)
         {
+            // существующий код для полоски
             var size = Instance.healthBar.sizeDelta;
             size.x = Instance.healthBarElementSize * health;
             Instance.healthBar.sizeDelta = size;
+            
+            // добавить текст
+            if (Instance.healthText != null)
+                Instance.healthText.text = $"{health}";
         }
 
         public void OnGameOver(int finalScore, bool isNewRecord, int coinsEarned)

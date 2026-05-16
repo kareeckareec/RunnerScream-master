@@ -81,32 +81,6 @@ public class LeaderboardManager : MonoBehaviour
         isInitialized = true;
     }
 
-    /// <summary>
-    /// Добавляет очки в таблицу и проверяет, побит ли личный рекорд.
-    /// </summary>
-    /// <param name="currentScore">Текущий счёт игрока</param>
-    /// <returns>true, если установлен новый личный рекорд</returns>
-    public bool TryAddScoreAndCheckRecord(int currentScore)
-    {
-        EnsureInitialized();
-        
-        string playerName = DataBase.UserData.NickName;
-        if (string.IsNullOrEmpty(playerName))
-            playerName = defaultPlayerName;
-
-        int bestScore = GetPlayerBestScore(playerName);
-        bool isNewRecord = currentScore > bestScore;
-
-        AddScore(currentScore, playerName);
-
-        if (isNewRecord)
-        {
-            DataBase.UserData.Record = currentScore;
-            DataBase.UserData.UpdateData();
-        }
-
-        return isNewRecord;
-    }
 
     public void AddScore(int score, string playerName = null)
     {

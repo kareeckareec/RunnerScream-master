@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using Garage;
+using DataBase;
 
 namespace CoreGameplay
 {
@@ -13,11 +15,27 @@ namespace CoreGameplay
 
         private void Start()
         {
+            // Если данные ещё не загружены, подписываемся на событие
+            if (DataBase.UserData.IsDataLoaded)
+                ApplySelectedCar();
+            else
+                DataBase.UserData.OnDataLoaded += OnDataLoaded;
+        }
+
+        private void OnDataLoaded()
+        {
+            DataBase.UserData.OnDataLoaded -= OnDataLoaded;
             ApplySelectedCar();
         }
 
         public void ApplySelectedCar()
         {
+            if (!UserData.IsDataLoaded)
+            {
+                UserData.OnDataLoaded += () => { ApplySelectedCar(); UserData.OnDataLoaded -= ApplySelectedCar; };
+                return;
+            }
+
             int selectedId = DataBase.UserData.SelectedCar;
             CarDataSO carData = CarsDatabase.Instance.GetCarById(selectedId);
             if (carData == null)
@@ -39,7 +57,6 @@ namespace CoreGameplay
             {
                 if (currentModel != null) Destroy(currentModel);
                 currentModel = Instantiate(carData.carPrefab, modelParent.position, modelParent.rotation, modelParent);
-                // При необходимости настроить слои для камеры
             }
             else
             {

@@ -7,7 +7,6 @@ namespace CoreGameplay.Pickups
     {
         [Header("Visual Effects")]
         [SerializeField] protected GameObject visualEffectPrefab;
-        [SerializeField] protected AudioClip pickupSound;
 
         protected bool isCollected = false;
 

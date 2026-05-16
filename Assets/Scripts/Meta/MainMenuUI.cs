@@ -1,4 +1,3 @@
-// MainMenuUI.cs
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -39,6 +38,8 @@ namespace Meta
         
         void Start()
         {
+            AudioManager.Instance.PlayMenuMusic();
+
             // Назначаем обработчики кнопок
             playButton.onClick.AddListener(StartGame);
             garageButton.onClick.AddListener(OpenGarage);
@@ -52,6 +53,7 @@ namespace Meta
             
             // Загружаем данные игрока
             LoadPlayerData();
+
 
             if (musicVolumeSlider != null)
             {
@@ -101,10 +103,13 @@ namespace Meta
             BackToMain();
         }
         
-        void StartGame()
+        public void StartGame()
         {
-            DataBase.UserData.UpdateData();
-            SceneManager.LoadScene(2);
+            DataBase.UserData.GetData(() =>
+            {
+                DataBase.UserData.UpdateData();
+                SceneManager.LoadScene(2);
+            });
         }
         
         public void OpenGarage()

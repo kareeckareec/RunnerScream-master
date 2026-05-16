@@ -71,8 +71,9 @@ public class LeaderboardUI : MonoBehaviour
             Destroy(child.gameObject);
         }
         
-        // Получаем топ игроков
-        List<ScoreEntry> topScores = LeaderboardManager.Instance.GetTopScores();
+        Debug.Log("RefreshLeaderboard called");
+        var topScores = LeaderboardManager.Instance.GetTopScores();
+        Debug.Log($"Top scores count: {topScores.Count}");
         
         if (topScores.Count == 0)
         {

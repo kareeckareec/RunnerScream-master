@@ -1,6 +1,7 @@
-// GarageUI.cs
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using TMPro;
 using Meta;
 
@@ -29,7 +30,6 @@ namespace Garage
         [SerializeField] private Button nextButton;
         [SerializeField] private Button closeButton;
 
-        // Удалено поле selectedButton
 
         private void Start()
         {
@@ -52,6 +52,93 @@ namespace Garage
                 purchaseButton.onClick.AddListener(() => GarageManager.Instance.PurchaseCurrentCar());
             if (closeButton != null)
                 closeButton.onClick.AddListener(CloseGarage);
+        }
+
+        [Header("Swipe Settings (New Input System)")]
+        [SerializeField] private float minSwipeDistance = 50f;
+        [SerializeField] private float maxVerticalDeviation = 30f; // макс. вертикальное отклонение для горизонтального свайпа
+
+        private Vector2 touchStartPos;
+        private bool isSwiping = false;
+        private int activeTouchId = -1;
+
+        private void Update()
+        {
+            HandleSwipeWithInputSystem();
+        }
+
+        private void HandleSwipeWithInputSystem()
+        {
+            // Проверяем наличие сенсорного экрана (мобильное устройство)
+            if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
+            {
+                var touches = Touchscreen.current.touches;
+                // Берём первый активный тач
+                var touch = touches[0];
+                
+                if (touch.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Began)
+                {
+                    // Проверяем, не попали ли по UI
+                    if (IsPointerOverUI(touch.touchId.ReadValue()))
+                    {
+                        isSwiping = false;
+                        return;
+                    }
+                    touchStartPos = touch.position.ReadValue();
+                    isSwiping = true;
+                    activeTouchId = touch.touchId.ReadValue();
+                }
+                else if (touch.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Ended && isSwiping && touch.touchId.ReadValue() == activeTouchId)
+                {
+                    Vector2 delta = touch.position.ReadValue() - touchStartPos;
+                    if (Mathf.Abs(delta.x) > minSwipeDistance && Mathf.Abs(delta.y) < maxVerticalDeviation)
+                    {
+                        if (delta.x > 0)
+                            GarageManager.Instance?.PreviousCar();
+                        else
+                            GarageManager.Instance?.NextCar();
+                    }
+                    isSwiping = false;
+                    activeTouchId = -1;
+                }
+            }
+            // Поддержка мыши в редакторе (опционально)
+            else if (Mouse.current != null)
+            {
+                var mouse = Mouse.current;
+                if (mouse.leftButton.wasPressedThisFrame)
+                {
+                    if (IsPointerOverUI())
+                    {
+                        isSwiping = false;
+                        return;
+                    }
+                    touchStartPos = mouse.position.ReadValue();
+                    isSwiping = true;
+                }
+                else if (mouse.leftButton.wasReleasedThisFrame && isSwiping)
+                {
+                    Vector2 delta = mouse.position.ReadValue() - touchStartPos;
+                    if (Mathf.Abs(delta.x) > minSwipeDistance && Mathf.Abs(delta.y) < maxVerticalDeviation)
+                    {
+                        if (delta.x > 0)
+                            GarageManager.Instance?.PreviousCar();
+                        else
+                            GarageManager.Instance?.NextCar();
+                    }
+                    isSwiping = false;
+                }
+            }
+        }
+
+        private bool IsPointerOverUI(int touchId = -1)
+        {
+            if (EventSystem.current == null) return false;
+            
+            if (touchId >= 0)
+                return EventSystem.current.IsPointerOverGameObject(touchId);
+            else
+                return EventSystem.current.IsPointerOverGameObject();
         }
         
         private void OnDestroy()
